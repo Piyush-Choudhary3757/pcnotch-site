@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; font-src data:; img-src data:; base-uri 'none'; form-action 'none'">
 <title>PcNotch — your AI agents, living in the Mac notch</title>
 <meta name="description" content="PcNotch turns the Mac notch into mission control for Claude Code, OpenCode, Cline, Hermes, jcode and Kimi Code. Watch every session, answer approvals, jump back to the exact terminal tab.">
 <style>
@@ -19,7 +20,7 @@
   --red: #f87171;
   --blue: #60a5fa;
   --dim: rgba(255,255,255,.52);
-  --dimmer: rgba(255,255,255,.32);
+  --dimmer: rgba(255,255,255,.45);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -117,12 +118,12 @@ h1 .accent { color: var(--green); text-shadow: 0 0 26px rgba(74,222,128,.45); }
   background: #000;
   border-radius: 0 0 12px 12px;
   display: flex; align-items: center;
-  padding: 0 10px;
+  padding: 0 12px; overflow: hidden;
   transition: opacity .3s, transform .3s;
 }
 .island.gone { opacity: 0; transform: translateX(-50%) translateY(-8px) scale(.94); pointer-events: none; }
 @keyframes blink { 50% { opacity: .35 } }
-.island .slot { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
+.island .slot { display: flex; align-items: center; gap: 4px; flex: 1 0 auto; }
 .island #slotL { justify-content: flex-end; }
 .island #slotR { justify-content: flex-start; }
 .island .notchsp { width: 44px; flex: none; }
@@ -241,7 +242,7 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
 .simbar .smi.menus { color: rgba(255,255,255,.45); margin-left: 14px; letter-spacing: 1px; }
 .simbar .smr { color: rgba(255,255,255,.6); letter-spacing: .5px; }
 .simbar .smr b { color: rgba(255,255,255,.85); font-weight: 400; }
-.simisland { width: 300px; height: 46px; cursor: pointer; }
+.simisland { min-width: 190px; max-width: 460px; height: 36px; cursor: pointer; }
 .simdesk { position: absolute; inset: 34px 0 0 0; }
 .simterm {
   position: absolute; left: 50%; top: 53%; transform: translate(-50%,-50%) scale(.92);
@@ -310,7 +311,7 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
 .simcursor svg { display: block; transition: transform .1s; }
 .simcursor.down svg { transform: scale(.82); }
 .simapproval {
-  position: absolute; left: 50%; top: 54px; transform: translate(-50%,-130%);
+  position: absolute; left: 50%; top: 46px; transform: translate(-50%,-130%);
   width: 360px; background: rgba(11,11,14,.97); backdrop-filter: blur(10px);
   border: 1px solid rgba(255,159,10,.55); border-radius: 12px;
   padding: 12px; z-index: 15; font-size: 10px;
@@ -341,15 +342,15 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
 .ap-allow { background: #fff; color: #000; }
 .ap-auto { background: #FFD60A; color: #000; }
 .simsessions {
-  position: absolute; left: 50%; top: 48px; transform: translate(-50%,-130%);
-  width: 420px; background: #0B0B0E;
+  position: absolute; left: 50%; top: -1px; transform: translate(-50%,-130%);
+  width: min(600px, 88%); background: #0B0B0E;
   border: 1px solid rgba(255,255,255,.08); border-top: none;
   border-radius: 0 0 22px 22px;
   padding: 0 0 10px; z-index: 14; font-size: 10px;
-  transition: transform .4s cubic-bezier(.3,1.3,.4,1);
+  visibility: hidden; transition: transform .4s cubic-bezier(.3,1.3,.4,1), visibility .4s;
   box-shadow: 0 18px 44px rgba(0,0,0,.6);
 }
-.simsessions.show { transform: translate(-50%,0); }
+.simsessions.show { transform: translate(-50%,0); visibility: visible; }
 .ss-strip {
   display: flex; align-items: center; justify-content: space-between;
   height: 28px; padding: 0 12px; font-size: 9.5px;
@@ -397,6 +398,19 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
 .ss-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
 .ss-rtitle { font-size: 11px; color: rgba(255,255,255,.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
 
+.whysec .k.krd { color: var(--red); }
+.whysec .k.kam { color: var(--orange); }
+.whysec .ksolve { border-color: rgba(74,222,128,.35); background: rgba(74,222,128,.04); }
+.redword { color: var(--red); font-weight: 400; }
+
+/* ---- flagged-command approval ---- */
+.simapproval.danger { border-color: rgba(255,69,58,.6); }
+.simapproval.danger::before { background: #FF453A; }
+.simapproval.danger .ap-ico, .simapproval.danger .ap-tool { color: #FF453A; }
+.simapproval.danger .ap-reason { color: rgba(255,69,58,.85); }
+.ap-cmd { background: rgba(255,69,58,.12); color: #ff7b72; border-radius: 8px; padding: 9px; margin: 0 0 7px 6px; font-size: 10.5px; white-space: pre; }
+.ap-flag { color: rgba(255,255,255,.55); font-size: 9px; margin: 0 0 9px 6px; }
+
 /* ---- reveal ---- */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.in { opacity: 1; transform: none; }
@@ -414,6 +428,7 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
   <div class="wrap">
     <a class="brand" href="#top"><span id="navcreature"></span>PcNotch <span class="dot"></span></a>
     <span class="spacer"></span>
+    <a class="navlink hide-sm" href="#why">Why</a>
     <a class="navlink hide-sm" href="#features">Features</a>
     <a class="navlink hide-sm" href="#safety">Safety</a>
     <a class="navlink hide-sm" href="https://github.com/Piyush-Choudhary3757/pcnotch-site">GitHub</a>
@@ -435,12 +450,29 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
     <div class="dl-meta">v1.5.0-beta.2 · universal (Apple Silicon + Intel) · DMG 3.0 MB · <code>free</code></div>
   </header>
 
+  <!-- WHY -->
+  <section id="why" class="whysec">
+    <div class="sec-head reveal">
+      <div class="sec-tag">Why we built it</div>
+      <h2>Plan mode nags. Auto mode is blind.</h2>
+      <p>Agentic coding ships with two settings: answer every question yourself, or stop being asked at all. Neither is control.</p>
+    </div>
+    <div class="safety">
+      <div class="scard reveal"><div class="k krd">Plan mode: you're the bottleneck</div>
+        <p>Every Edit and every Bash waits on a yes. You alt-tab through panes hunting for who asked what — and your flow dies on every switch.</p></div>
+      <div class="scard reveal"><div class="k kam">Auto mode: you're out of the loop</div>
+        <p>So everyone flips to auto and hopes. The work speeds up — and you find out what the agent did to your repo after it already did it.</p></div>
+      <div class="scard reveal ksolve"><div class="k">PcNotch: speed and veto</div>
+        <p>Every question from every agent lands in one place — the notch — and you answer in a click without leaving your editor. Risky commands arrive <b class="redword">in red</b>, flagged by deterministic hooks. Zero LLM calls, zero tokens, native Swift.</p></div>
+    </div>
+  </section>
+
   <!-- SIMULATION -->
   <section class="simsec">
     <div class="sec-head reveal">
       <div class="sec-tag">Watch it work</div>
       <h2>From a cold terminal to 128 subagents</h2>
-      <p>A scripted loop of the real flow: open cmux, launch four agents, start the project — then answer the approval without ever leaving the notch.</p>
+      <p>A scripted loop of the real flow: open cmux, launch four agents, answer a real diff from the notch — then watch a hook flag a destructive command <b class="redword">in red</b> and get denied.</p>
     </div>
     <div class="sim reveal" id="sim">
       <div class="simbar">
@@ -482,6 +514,12 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
           <div class="ap-dl ctx"><span class="g">90</span><span>  }</span></div>
         </div>
         <div class="sa-btns"><span class="ap-deny" id="simdeny">Deny</span><span class="ap-allow" id="simallow">Allow Once</span><span class="ap-auto" id="simauto">Auto</span></div>
+      </div>
+      <div class="simapproval danger" id="simdanger">
+        <div class="ap-head"><span class="ap-ico">⛔</span><span class="ap-tool">Bash</span><span class="ap-reason">· flagged by hook: destructive</span></div>
+        <div class="ap-cmd">$ rm -rf ~/Projects</div>
+        <div class="ap-flag">hook: recursive delete outside the workspace — this never auto-runs</div>
+        <div class="sa-btns"><span class="ap-deny" id="dangerdeny">Deny</span><span class="ap-allow" id="dangerallow">Allow Once</span></div>
       </div>
       <div class="simcursor" id="simcursor"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M5 3l14 7.2-6.6 1.4L8.8 18z" fill="#fff" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
     </div>
@@ -533,6 +571,8 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
         <p>Stuck requests fall back to the terminal after 45s; stale ones are swept after 15 min. Nothing blocks forever.</p></div>
       <div class="scard reveal"><div class="k">One-file kill switch</div>
         <p><code>touch ~/.pcnotc/disabled</code> and the hook exits instantly — every feature off, no restart needed.</p></div>
+      <div class="scard reveal"><div class="k">Hooks, not vibes</div>
+        <p>Deterministic hooks grade every request before it runs — no model judgment, no tokens. Destructive commands show red in the notch before they can happen.</p></div>
       <div class="scard reveal"><div class="k">Localhost only</div>
         <p>The optional streaming proxy binds <code>127.0.0.1</code>, never logs auth headers, and is off unless you opt in.</p></div>
     </div>
@@ -549,7 +589,7 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
         <li>Open the DMG and drag <code>PcNotch.app</code> to Applications.</li>
         <li>Beta build is ad-hoc signed — first launch: right-click → <code>Open</code>.</li>
         <li>Quit any time from the <code>◗</code> menu-bar item.</li>
-        <li>SHA-256 starts <code>88a7286fa194368f</code> · 3.0 MB</li>
+        <li>3.0 MB · SHA-256:<br><code style="word-break:break-all">88a7286fa194368f3e0821bd97505b059a7d8ba60ac44e74a6dd3cfe244ac1ab</code></li>
       </ul>
     </div>
   </section>
@@ -649,6 +689,9 @@ const simsessions = document.getElementById('simsessions');
 const simallow = document.getElementById('simallow');
 const simdeny = document.getElementById('simdeny');
 const simauto = document.getElementById('simauto');
+const simdanger = document.getElementById('simdanger');
+const dangerdeny = document.getElementById('dangerdeny');
+const dangerallow = document.getElementById('dangerallow');
 const dockterm = document.getElementById('dockterm');
 const slotL = document.getElementById('slotL');
 const slotR = document.getElementById('slotR');
@@ -787,14 +830,15 @@ function renderSessions() {
     simsessions.appendChild(r);
   });
 }
-function closeSessions() { simsessions.classList.remove('show'); clearInterval(ssTimer); }
+function closeSessions() { simsessions.classList.remove('show'); simisland.classList.remove('gone'); clearInterval(ssTimer); }
 simisland.addEventListener('click', () => {
-  if (simapproval.classList.contains('show')) return;
+  if (simapproval.classList.contains('show') || simdanger.classList.contains('show')) return;
   if (simsessions.classList.contains('show')) { closeSessions(); return; }
   renderSessions();
-  simsessions.classList.add('show');
+  simsessions.classList.add('show'); simisland.classList.add('gone');
   ssTimer = setInterval(renderSessions, 600);
 });
+simsessions.addEventListener('click', closeSessions);
 
 function simReset() {
   simterm.classList.remove('open');
@@ -803,8 +847,10 @@ function simReset() {
   document.querySelectorAll('.pane-log').forEach(l => l.innerHTML = '');
   document.querySelectorAll('.pane .sub').forEach(s => s.textContent = '');
   simapproval.classList.remove('show');
+  simdanger.classList.remove('show');
   simisland.classList.remove('gone');
   simallow.onclick = simdeny.onclick = simauto.onclick = null;
+  dangerdeny.onclick = dangerallow.onclick = null;
   closeSessions();
   simPhase = 'idle';
   islandIdle();
@@ -909,6 +955,35 @@ async function runSim() {
       islandWorking(); simPhase = 'working';
       await wait(4300);
     }
+    // flagged-command demo: hook grades a destructive Bash red, scripted cursor denies it
+    simPhase = 'approval';
+    islandWaiting();
+    closeSessions();
+    simdanger.classList.add('show');
+    simisland.classList.add('gone');
+    let dchoice = await new Promise(res => {
+      const to = setTimeout(() => res(null), 4200);
+      dangerdeny.onclick = () => { clearTimeout(to); res('deny'); };
+      dangerallow.onclick = () => { clearTimeout(to); res('allow'); };
+    });
+    dangerdeny.onclick = dangerallow.onclick = null;
+    const dByUser = dchoice !== null;
+    if (dchoice === null) { await clickAt(dangerdeny, 800); dchoice = 'deny'; }
+    simdanger.classList.remove('show');
+    simisland.classList.remove('gone');
+    const hlog = document.getElementById('log-hermes');
+    const dl = document.createElement('div');
+    if (dchoice === 'deny') {
+      islandFlash(false, dByUser ? '✗ you denied it' : '✗ denied — hook flagged it');
+      dl.style.color = '#f87171'; dl.textContent = '✗ Bash denied — hook: destructive';
+    } else {
+      islandFlash(true, '✓ allowed by you');
+      dl.style.color = '#FF9F0A'; dl.textContent = '⚠ Bash allowed by you — logged';
+    }
+    hlog.appendChild(dl);
+    await wait(2000);
+    islandWorking(); simPhase = 'working';
+    await wait(2400);
     working = false; await Promise.all([...workers, swarm]);
     AGENTS.forEach(a => {
       const log = document.getElementById('log-'+a.id);
@@ -940,7 +1015,7 @@ if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
 
 // ---- ticker ----
 const items = ['<b>Claude Code</b>','<b>OpenCode</b>','<b>Cline</b>','<b>Hermes</b>','<b>jcode</b>','<b>Kimi Code</b>',
-  'approvals in the notch','red/green diffs','tmux-precise jump','file shelf','media ticker','cost odometer','quota meters','no dock icon'];
+  'approvals in the notch','hooks catch rm -rf','no auto-mode surrender','zero tokens burned','red/green diffs','tmux-precise jump','file shelf','media ticker','cost odometer','quota meters','no dock icon'];
 document.getElementById('ticker').innerHTML =
   items.map(i => `<span>${i}</span>`).join('') + items.map(i => `<span>${i}</span>`).join('');
 
