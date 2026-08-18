@@ -5,6 +5,7 @@
 PcNotch turns the Mac notch into mission control for Claude Code, OpenCode, Cline, Hermes, jcode and Kimi Code — watch every session, answer approvals right from the notch, and jump back to the exact terminal tab.
 
 - **Download:** [PcNotch-1.5.0-beta.2.dmg](https://github.com/Piyush-Choudhary3757/pcnotch-site/releases/download/v1.5.0-beta.2/PcNotch-1.5.0-beta.2.dmg) (macOS, universal, 3.0 MB, free)
+- **Verify:** `shasum -a 256 PcNotch-1.5.0-beta.2.dmg` → `88a7286fa194368f3e0821bd97505b059a7d8ba60ac44e74a6dd3cfe244ac1ab`
 - **All releases:** https://github.com/Piyush-Choudhary3757/pcnotch-site/releases
 
 ## Why
