@@ -193,6 +193,106 @@ footer a { color: var(--dim); border-bottom: 1px dotted rgba(255,255,255,.25); }
 footer a:hover { color: #fff; }
 footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: center; }
 
+/* ---- simulation ---- */
+.simsec { padding-top: 70px; }
+.sim {
+  position: relative; width: min(920px, 94vw); margin: 0 auto; aspect-ratio: 16/10;
+  background: radial-gradient(120% 120% at 50% 0%, #1b1b26 0%, #0d0d13 70%);
+  border: 1px solid var(--edge); border-radius: 18px; overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6);
+  font-size: 9px; user-select: none;
+}
+.simbar {
+  position: relative; height: 30px; z-index: 5;
+  background: rgba(19,19,24,.85); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 12px; color: var(--dim); font-size: 9px;
+  border-bottom: 1px solid var(--edge);
+}
+.simisland { min-width: 190px; height: 30px; }
+.simdesk { position: absolute; inset: 30px 0 0 0; }
+.simterm {
+  position: absolute; left: 50%; top: 53%; transform: translate(-50%,-50%) scale(.92);
+  width: 78%; height: 74%; background: rgba(8,8,12,.96);
+  border: 1px solid rgba(255,255,255,.12); border-radius: 10px;
+  opacity: 0; transition: opacity .5s, transform .5s;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,.65);
+}
+.simterm.open { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+.simterm-bar {
+  display: flex; align-items: center; gap: 5px; padding: 6px 9px;
+  background: rgba(255,255,255,.05); border-bottom: 1px solid var(--edge);
+  color: var(--dimmer); font-size: 8px;
+}
+.simterm-bar i { width: 8px; height: 8px; border-radius: 50%; background: #3a3a44; }
+.simterm-bar i:nth-child(1) { background: #ff5f57; }
+.simterm-bar i:nth-child(2) { background: #febc2e; }
+.simterm-bar i:nth-child(3) { background: #28c840; }
+.simterm-bar span { margin-left: 6px; }
+.simterm-body { flex: 1; position: relative; padding: 8px; font-size: 8.5px; line-height: 1.55; }
+.simcmd { color: #fff; }
+.prompt { color: var(--green); }
+.caret { display: inline-block; width: 5px; height: 9px; background: #fff; vertical-align: -1px; animation: blink 1s steps(2) infinite; }
+.simpanes {
+  position: absolute; inset: 8px; display: grid;
+  grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 6px;
+  opacity: 0; transition: opacity .4s;
+}
+.simpanes.split { opacity: 1; }
+.pane {
+  border: 1px solid rgba(255,255,255,.1); border-radius: 6px;
+  background: rgba(255,255,255,.02); display: flex; flex-direction: column; overflow: hidden;
+}
+.pane-head {
+  display: flex; align-items: center; gap: 5px; padding: 3px 7px;
+  border-bottom: 1px solid rgba(255,255,255,.07); font-size: 8px;
+}
+.pane-head .pname { letter-spacing: .5px; }
+.pane-head .sub { margin-left: auto; color: var(--dimmer); font-size: 7.5px; }
+.pane-log { flex: 1; padding: 5px 7px; overflow: hidden; color: rgba(255,255,255,.75); font-size: 8px; line-height: 1.6; }
+.cmdline { color: #fff; }
+.dimline { color: rgba(255,255,255,.4); }
+.okline { color: var(--green); }
+.simdock {
+  position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%);
+  display: flex; gap: 8px; padding: 7px 10px;
+  background: rgba(255,255,255,.06); border: 1px solid var(--edge);
+  border-radius: 14px; backdrop-filter: blur(8px);
+}
+.dockicon {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; font-size: 12px;
+  background: #1e1e28; border: 1px solid rgba(255,255,255,.1);
+  transition: transform .18s;
+}
+.dockicon.bump { transform: translateY(-8px) scale(1.15); }
+.simcursor {
+  position: absolute; left: 0; top: 0; z-index: 20; pointer-events: none;
+  filter: drop-shadow(1px 2px 2px rgba(0,0,0,.6));
+  transition: transform .6s cubic-bezier(.45,.05,.3,1);
+}
+.simcursor svg { display: block; transition: transform .1s; }
+.simcursor.down svg { transform: scale(.82); }
+.simapproval {
+  position: absolute; left: 50%; top: 34px; transform: translate(-50%,-130%);
+  width: 250px; background: #101016;
+  border: 1px solid rgba(251,146,60,.45); border-radius: 12px;
+  padding: 10px 12px; z-index: 15; font-size: 8.5px;
+  transition: transform .45s cubic-bezier(.3,1.4,.4,1);
+  box-shadow: 0 18px 44px rgba(0,0,0,.6), 0 0 22px rgba(251,146,60,.18);
+}
+.simapproval.show { transform: translate(-50%,0); }
+.simapproval.done { border-color: rgba(74,222,128,.5); box-shadow: 0 18px 44px rgba(0,0,0,.6), 0 0 22px rgba(74,222,128,.2); }
+.sa-title { color: var(--orange); margin-bottom: 5px; }
+.simapproval.done .sa-title { color: var(--green); }
+.sa-diff { color: var(--dim); margin-bottom: 8px; }
+.plus { color: var(--green); font-weight: 400; } .minus { color: var(--red); font-weight: 400; }
+.sa-btns { display: flex; gap: 6px; justify-content: flex-end; }
+.sa-btns span { padding: 3px 12px; border-radius: 6px; font-size: 8px; }
+.sa-deny { background: rgba(248,113,113,.15); color: var(--red); border: 1px solid rgba(248,113,113,.4); }
+.sa-allow { background: var(--green); color: #06130a; }
+
 /* ---- reveal ---- */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.in { opacity: 1; transform: none; }
@@ -231,15 +331,48 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
     <div class="dl-meta">v1.5.0-beta.2 · universal (Apple Silicon + Intel) · DMG 3.0 MB · <code>free</code></div>
   </header>
 
-  <!-- LIVE ISLAND -->
-  <div class="stage">
-    <div class="menubar">
-      <span>Finder</span>
-      <div class="island" id="island"></div>
-      <span id="menuright">Tue 18 Aug · 00:11</span>
+  <!-- SIMULATION -->
+  <section class="simsec">
+    <div class="sec-head reveal">
+      <div class="sec-tag">Watch it work</div>
+      <h2>From a cold terminal to 128 subagents</h2>
+      <p>A scripted loop of the real flow: open cmux, launch four agents, start the project — then answer the approval without ever leaving the notch.</p>
     </div>
-  </div>
-  <div class="stage-note">live mock — the island cycles between working, needing you, and playing music</div>
+    <div class="sim reveal" id="sim">
+      <div class="simbar">
+        <span>Finder</span>
+        <div class="island simisland" id="simisland"></div>
+        <span id="menuright"></span>
+      </div>
+      <div class="simdesk">
+        <div class="simterm" id="simterm">
+          <div class="simterm-bar"><i></i><i></i><i></i><span>Terminal — cmux</span></div>
+          <div class="simterm-body">
+            <div class="simcmd" id="simcmdline"><span class="prompt">~ % </span><span id="simtyped"></span><span class="caret"></span></div>
+            <div class="simpanes" id="simpanes">
+              <div class="pane"><div class="pane-head"><span class="pic" data-sp="zig" data-color="orange"></span><span class="pname" style="color:#fb923c">claude</span><span class="sub" id="sub-claude"></span></div><div class="pane-log" id="log-claude"></div></div>
+              <div class="pane"><div class="pane-head"><span class="pic" data-sp="inky" data-color="green"></span><span class="pname" style="color:#4ade80">jcode</span><span class="sub" id="sub-jcode"></span></div><div class="pane-log" id="log-jcode"></div></div>
+              <div class="pane"><div class="pane-head"><span class="pic" data-sp="sparq" data-color="cyan"></span><span class="pname" style="color:#22d3ee">kimi</span><span class="sub" id="sub-kimi"></span></div><div class="pane-log" id="log-kimi"></div></div>
+              <div class="pane"><div class="pane-head"><span class="pic" data-sp="pip" data-color="purple"></span><span class="pname" style="color:#c084fc">hermes</span><span class="sub" id="sub-hermes"></span></div><div class="pane-log" id="log-hermes"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="simdock">
+          <div class="dockicon" title="Finder" style="color:#60a5fa">◐</div>
+          <div class="dockicon" id="dockterm" title="Terminal" style="color:#fff">&gt;_</div>
+          <div class="dockicon" title="Safari" style="color:#22d3ee">◍</div>
+          <div class="dockicon" title="Music" style="color:#f87171">♪</div>
+        </div>
+      </div>
+      <div class="simapproval" id="simapproval">
+        <div class="sa-title">⚠ approval · claude</div>
+        <div class="sa-diff">Edit · Sources/PcNotc/NotchModel.swift <b class="plus">+14</b> <b class="minus">−2</b></div>
+        <div class="sa-btns"><span class="sa-deny">Deny</span><span class="sa-allow" id="simallow">Allow</span></div>
+      </div>
+      <div class="simcursor" id="simcursor"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M5 3l14 7.2-6.6 1.4L8.8 18z" fill="#fff" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="stage-note">scripted demo — loops on its own · no real sessions were harmed</div>
+  </section>
 
   <!-- TICKER -->
   <div class="ticker"><div class="ticker-inner" id="ticker"></div></div>
@@ -389,34 +522,184 @@ document.querySelectorAll('.fcard .ic').forEach(el => {
   spawnCreature(el, el.dataset.sp, el.dataset.color, 'march', 2.6, 520);
 });
 
-// ---- live island: cycles working → attention → music ----
-const island = document.getElementById('island');
-const STATES = [
-  {build() { island.classList.remove('attn');
-      spawnCreature(island,'zig','green','march',1.7,480);
-      spawnCreature(island,'inky','green','march',1.7,480);
-      spawnCreature(island,'sparq','cyan','march',1.7,480);
-      const v=document.createElement('span'); v.className='verb'; v.textContent='Thinking'; island.appendChild(v); },
-    dur: 5000},
-  {build() { island.classList.add('attn');
-      spawnCreature(island,'zig','orange','alert',1.7);
-      spawnCreature(island,'sparq','orange','alert',1.7);
-      const v=document.createElement('span'); v.className='verb wait'; v.textContent='Needs approval'; island.appendChild(v); },
-    dur: 4200},
-  {build() { island.classList.remove('attn');
-      spawnCreature(island,'zig','dim','a',1.7);
-      const v=document.createElement('span'); v.className='music'; v.textContent='♪ Midnight City — M83'; island.appendChild(v); },
-    dur: 4200},
+// ---- mac screen simulation: scripted loop ----
+const sim = document.getElementById('sim');
+const simisland = document.getElementById('simisland');
+const simterm = document.getElementById('simterm');
+const simcmdline = document.getElementById('simcmdline');
+const simtyped = document.getElementById('simtyped');
+const simpanes = document.getElementById('simpanes');
+const simcursor = document.getElementById('simcursor');
+const simapproval = document.getElementById('simapproval');
+const dockterm = document.getElementById('dockterm');
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+document.querySelectorAll('.pane-head .pic').forEach(el =>
+  spawnCreature(el, el.dataset.sp, el.dataset.color, 'march', 1.1, 520));
+
+const AGENTS = [
+  {id:'claude', cmd:'claude', css:'#fb923c', subs:47, lines:[
+    '⏵ Read(Sources/PcNotc/Views.swift)','⏵ subagent ⑂ explore: panel layout',
+    '⏵ Edit(NotchModel.swift) +12 −3','⏵ Bash(swift build)','  Build complete! (9.58s)',
+    '⏵ subagent ⑂ plan: quota strip','⏵ Write(Views+Cards.swift) +84','⏵ Bash(swift test)','  19/19 passing']},
+  {id:'jcode', cmd:'jcode', css:'#4ade80', subs:33, lines:[
+    '⏵ fold journal: 1,204 events','⏵ incremental fold — appended bytes',
+    '⏵ subagent ⑂ perf: refresh gating','⏵ Write(ROADMAP.md)','⏵ Bash(swift build)','  Build complete! (6.02s)']},
+  {id:'kimi', cmd:'kimi', css:'#22d3ee', subs:29, lines:[
+    '⏵ Grep("island", Sources/)','⏵ Edit(Views.swift) +7 −2',
+    '⏵ subagent ⑂ sweep: approval diffs','⏵ Read(NotchController.swift)','⏵ Bash(swift build)','  Build complete! (8.11s)']},
+  {id:'hermes', cmd:'hermes', css:'#c084fc', subs:19, lines:[
+    '⏵ task: wire hook events','⏵ Edit(pcnotc-hook) +5 −1',
+    '⏵ subagent ⑂ check: deny-wins','⏵ Bash(./packaging/smoke.sh)','  smoke OK (19/19)','⏵ status: waiting on review']},
 ];
-let si = 0;
-function cycleIsland() {
-  for (let i = live.length-1; i >= 0; i--) if (island.contains(live[i].cv)) live.splice(i,1);
-  island.innerHTML = '';
-  STATES[si].build();
-  setTimeout(cycleIsland, STATES[si].dur);
-  si = (si+1) % STATES.length;
+
+function simPos(el) {
+  const s = sim.getBoundingClientRect(), r = el.getBoundingClientRect();
+  return [r.left - s.left + r.width/2 - 4, r.top - s.top + r.height/2 - 2];
 }
-cycleIsland();
+async function cursorTo(el, dur=650) {
+  const [x,y] = simPos(el);
+  simcursor.style.transitionDuration = dur + 'ms';
+  simcursor.style.transform = `translate(${x}px,${y}px)`;
+  await wait(dur + 70);
+}
+async function clickAt(el, dur=500) {
+  if (el) await cursorTo(el, dur);
+  simcursor.classList.add('down'); await wait(110);
+  simcursor.classList.remove('down'); await wait(190);
+}
+async function typeText(span, text) {
+  for (const ch of text) { span.textContent += ch; await wait(36 + Math.random()*48); }
+}
+function islandSet(build) {
+  for (let i = live.length-1; i >= 0; i--) if (simisland.contains(live[i].cv)) live.splice(i,1);
+  simisland.innerHTML = ''; simisland.classList.remove('attn'); build();
+}
+function verb(txt, cls) {
+  const v = document.createElement('span');
+  v.className = 'verb' + (cls ? ' ' + cls : ''); v.textContent = txt;
+  simisland.appendChild(v);
+}
+const islandIdle = () => islandSet(() => {
+  spawnCreature(simisland,'zig','dim','a',1.6); verb('idle');
+});
+const islandWorking = () => islandSet(() => {
+  spawnCreature(simisland,'zig','green','march',1.6,460);
+  spawnCreature(simisland,'inky','green','march',1.6,460);
+  spawnCreature(simisland,'sparq','cyan','march',1.6,460);
+  verb('4 working');
+});
+
+function simReset() {
+  simterm.classList.remove('open');
+  simcmdline.style.display = ''; simtyped.textContent = '';
+  simpanes.classList.remove('split');
+  document.querySelectorAll('.pane-log').forEach(l => l.innerHTML = '');
+  document.querySelectorAll('.pane .sub').forEach(s => s.textContent = '');
+  simapproval.classList.remove('show','done');
+  simapproval.querySelector('.sa-title').textContent = '⚠ approval · claude';
+  islandIdle();
+  simcursor.style.transitionDuration = '0ms';
+  simcursor.style.transform = `translate(${sim.clientWidth*0.82}px, ${sim.clientHeight*0.72}px)`;
+}
+
+async function runSim() {
+  for (;;) {
+    simReset();
+    await wait(1500);
+    await clickAt(dockterm, 700);
+    dockterm.classList.add('bump'); setTimeout(() => dockterm.classList.remove('bump'), 450);
+    simterm.classList.add('open');
+    await wait(750);
+    await typeText(simtyped, 'cmux');
+    await wait(480);
+    simcmdline.style.display = 'none'; simpanes.classList.add('split');
+    await wait(550);
+    for (const a of AGENTS) {
+      const log = document.getElementById('log-'+a.id);
+      const line = document.createElement('div'); line.className = 'cmdline';
+      const p = document.createElement('span'); p.style.color = a.css; p.textContent = '~ % ';
+      const t = document.createElement('span');
+      line.append(p, t); log.appendChild(line);
+      await typeText(t, a.cmd); await wait(300);
+      const b = document.createElement('div'); b.className = 'dimline';
+      b.textContent = a.cmd + ' · ~/vault/PcNotc'; log.appendChild(b);
+      await wait(160);
+    }
+    const clog = document.getElementById('log-claude');
+    const kl = document.createElement('div'); kl.className = 'cmdline';
+    const kp = document.createElement('span'); kp.style.color = '#fb923c'; kp.textContent = '❯ ';
+    const kt = document.createElement('span'); kl.append(kp, kt); clog.appendChild(kl);
+    await typeText(kt, 'start the project — island polish');
+    await wait(500);
+    islandWorking();
+    let working = true; const idx = {};
+    const workers = AGENTS.map(a => (async () => {
+      idx[a.id] = 0; let shown = 0;
+      const log = document.getElementById('log-'+a.id), sub = document.getElementById('sub-'+a.id);
+      while (working) {
+        await wait(280 + Math.random()*680);
+        if (!working) break;
+        const txt = a.lines[idx[a.id]++ % a.lines.length];
+        const d = document.createElement('div');
+        if (txt.startsWith('  ')) d.className = 'okline';
+        d.textContent = txt; log.appendChild(d);
+        while (log.children.length > 9) log.removeChild(log.firstChild);
+        shown = Math.min(a.subs, shown + 1 + Math.floor(Math.random()*3));
+        sub.textContent = shown + ' subagents';
+      }
+    })());
+    await wait(5200);
+    islandSet(() => {
+      simisland.classList.add('attn');
+      spawnCreature(simisland,'zig','orange','alert',1.6);
+      spawnCreature(simisland,'sparq','orange','alert',1.6);
+      verb('Needs approval','wait');
+    });
+    simapproval.classList.add('show');
+    await wait(1400);
+    await clickAt(document.getElementById('simallow'), 950);
+    simapproval.classList.add('done');
+    simapproval.querySelector('.sa-title').textContent = '✓ approved — back to work';
+    await wait(750);
+    simapproval.classList.remove('show');
+    islandWorking();
+    await wait(4300);
+    working = false; await Promise.all(workers);
+    AGENTS.forEach(a => {
+      const log = document.getElementById('log-'+a.id);
+      const d = document.createElement('div'); d.className = 'okline';
+      d.textContent = '✔ done — idle'; log.appendChild(d);
+    });
+    islandSet(() => {
+      spawnCreature(simisland,'zig','dim','a',1.6); spawnCreature(simisland,'inky','dim','a',1.6);
+      spawnCreature(simisland,'sparq','dim','a',1.6); spawnCreature(simisland,'pip','dim','a',1.6);
+      verb('4 idle · 128 subagents done');
+    });
+    await wait(5400);
+  }
+}
+
+if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  simterm.classList.add('open'); simcmdline.style.display = 'none'; simpanes.classList.add('split');
+  AGENTS.forEach(a => {
+    const log = document.getElementById('log-'+a.id);
+    a.lines.slice(0,4).forEach(txt => {
+      const d = document.createElement('div'); d.textContent = txt; log.appendChild(d);
+    });
+    const d = document.createElement('div'); d.className = 'okline';
+    d.textContent = '✔ done — idle'; log.appendChild(d);
+    document.getElementById('sub-'+a.id).textContent = a.subs + ' subagents';
+  });
+  islandSet(() => {
+    spawnCreature(simisland,'zig','dim','a',1.6); spawnCreature(simisland,'inky','dim','a',1.6);
+    spawnCreature(simisland,'sparq','dim','a',1.6); spawnCreature(simisland,'pip','dim','a',1.6);
+    verb('4 idle · 128 subagents done');
+  });
+  simcursor.style.display = 'none';
+} else {
+  runSim();
+}
 
 // ---- ticker ----
 const items = ['<b>Claude Code</b>','<b>OpenCode</b>','<b>Cline</b>','<b>Hermes</b>','<b>jcode</b>','<b>Kimi Code</b>',
