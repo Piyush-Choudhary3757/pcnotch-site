@@ -117,12 +117,12 @@ h1 .accent { color: var(--green); text-shadow: 0 0 26px rgba(74,222,128,.45); }
   background: #000;
   border-radius: 0 0 12px 12px;
   display: flex; align-items: center;
-  padding: 0 10px;
+  padding: 0 12px; overflow: hidden;
   transition: opacity .3s, transform .3s;
 }
 .island.gone { opacity: 0; transform: translateX(-50%) translateY(-8px) scale(.94); pointer-events: none; }
 @keyframes blink { 50% { opacity: .35 } }
-.island .slot { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
+.island .slot { display: flex; align-items: center; gap: 4px; flex: 1 0 auto; }
 .island #slotL { justify-content: flex-end; }
 .island #slotR { justify-content: flex-start; }
 .island .notchsp { width: 44px; flex: none; }
@@ -241,7 +241,7 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
 .simbar .smi.menus { color: rgba(255,255,255,.45); margin-left: 14px; letter-spacing: 1px; }
 .simbar .smr { color: rgba(255,255,255,.6); letter-spacing: .5px; }
 .simbar .smr b { color: rgba(255,255,255,.85); font-weight: 400; }
-.simisland { width: 300px; height: 46px; cursor: pointer; }
+.simisland { min-width: 190px; max-width: 460px; height: 36px; cursor: pointer; }
 .simdesk { position: absolute; inset: 34px 0 0 0; }
 .simterm {
   position: absolute; left: 50%; top: 53%; transform: translate(-50%,-50%) scale(.92);
@@ -310,7 +310,7 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
 .simcursor svg { display: block; transition: transform .1s; }
 .simcursor.down svg { transform: scale(.82); }
 .simapproval {
-  position: absolute; left: 50%; top: 54px; transform: translate(-50%,-130%);
+  position: absolute; left: 50%; top: 46px; transform: translate(-50%,-130%);
   width: 360px; background: rgba(11,11,14,.97); backdrop-filter: blur(10px);
   border: 1px solid rgba(255,159,10,.55); border-radius: 12px;
   padding: 12px; z-index: 15; font-size: 10px;
@@ -341,8 +341,8 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
 .ap-allow { background: #fff; color: #000; }
 .ap-auto { background: #FFD60A; color: #000; }
 .simsessions {
-  position: absolute; left: 50%; top: 48px; transform: translate(-50%,-130%);
-  width: 420px; background: #0B0B0E;
+  position: absolute; left: 50%; top: -1px; transform: translate(-50%,-130%);
+  width: min(600px, 88%); background: #0B0B0E;
   border: 1px solid rgba(255,255,255,.08); border-top: none;
   border-radius: 0 0 22px 22px;
   padding: 0 0 10px; z-index: 14; font-size: 10px;
@@ -787,14 +787,15 @@ function renderSessions() {
     simsessions.appendChild(r);
   });
 }
-function closeSessions() { simsessions.classList.remove('show'); clearInterval(ssTimer); }
+function closeSessions() { simsessions.classList.remove('show'); simisland.classList.remove('gone'); clearInterval(ssTimer); }
 simisland.addEventListener('click', () => {
   if (simapproval.classList.contains('show')) return;
   if (simsessions.classList.contains('show')) { closeSessions(); return; }
   renderSessions();
-  simsessions.classList.add('show');
+  simsessions.classList.add('show'); simisland.classList.add('gone');
   ssTimer = setInterval(renderSessions, 600);
 });
+simsessions.addEventListener('click', closeSessions);
 
 function simReset() {
   simterm.classList.remove('open');
