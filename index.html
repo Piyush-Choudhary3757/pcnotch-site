@@ -423,6 +423,48 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
   .hero { padding-top: 64px; }
   .navlink.hide-sm { display: none; }
 }
+
+/* ---- typography: readable body, pixel accents ---- */
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased; font-size: 15px; line-height: 1.7; }
+h1, h2, h3, .sec-tag, .eyebrow, .brand, .btn, .navlink, .ticker span, code, .dl-meta, .dlcount { font-family: 'DepartureMono', monospace; }
+.sim, .sim * { font-family: 'DepartureMono', monospace; }
+h1 { font-size: clamp(24px, 4.6vw, 46px); }
+.sec-head h2 { font-size: clamp(20px, 3.2vw, 30px); }
+.hero p.sub { font-size: 16px; max-width: 640px; }
+.sec-head p { font-size: 14px; }
+.fcard h3 { font-size: 14px; font-family: 'DepartureMono', monospace; }
+.fcard p { font-size: 13px; }
+.scard .k { font-family: 'DepartureMono', monospace; }
+.scard p { font-size: 13px; }
+.dl-box > p { font-size: 14px; }
+.dl-notes { font-size: 12.5px; }
+.stage-note, footer { font-size: 12px; }
+
+/* ---- big screens: let it breathe ---- */
+.wrap { max-width: 1080px; }
+.sim { width: min(1200px, 96vw); }
+@media (min-width: 1600px) {
+  .wrap { max-width: 1220px; }
+  body { font-size: 16px; }
+  .fcard p, .scard p { font-size: 14px; }
+}
+
+/* ---- phones: drop the desktop sim, everything else stacks ---- */
+@media (max-width: 640px) {
+  section { padding: 56px 0 6px; }
+  h1 { font-size: 24px; letter-spacing: 0; }
+  .sec-head h2 { font-size: 18px; }
+  .eyebrow { flex-wrap: wrap; justify-content: center; font-size: 9px; }
+  .hero p.sub { font-size: 15px; }
+  .hero { padding: 64px 0 16px; }
+  .hero .cta { flex-direction: column; align-items: stretch; }
+  .btn { justify-content: center; }
+  .sim, .stage-note { display: none; }
+  .simsec .sec-head p::after { content: " (the live demo plays on desktop)"; color: var(--dimmer); }
+  .shot { border-radius: 10px; }
+  .dl-box { padding: 34px 18px; }
+}
 </style>
 </head>
 <body>
