@@ -197,39 +197,49 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
 .simsec { padding-top: 70px; }
 .sim {
   position: relative; width: min(920px, 94vw); margin: 0 auto; aspect-ratio: 16/10;
-  background: radial-gradient(120% 120% at 50% 0%, #1b1b26 0%, #0d0d13 70%);
+  background:
+    radial-gradient(80% 100% at 18% 100%, rgba(124,92,255,.38), transparent 62%),
+    radial-gradient(70% 90% at 86% 12%, rgba(255,122,89,.32), transparent 58%),
+    radial-gradient(90% 90% at 58% 55%, rgba(56,189,248,.2), transparent 62%),
+    linear-gradient(180deg, #171723, #0b0b12);
   border: 1px solid var(--edge); border-radius: 18px; overflow: hidden;
   box-shadow: 0 30px 80px rgba(0,0,0,.6);
   font-size: 9px; user-select: none;
 }
 .simbar {
   position: relative; height: 30px; z-index: 5;
-  background: rgba(19,19,24,.85); backdrop-filter: blur(8px);
+  background: rgba(24,24,34,.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 12px; color: var(--dim); font-size: 9px;
-  border-bottom: 1px solid var(--edge);
+  padding: 0 14px; color: rgba(255,255,255,.82); font-size: 9px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
 }
-.simisland { min-width: 190px; height: 30px; }
+.simbar .smi { color: rgba(255,255,255,.85); }
+.simbar .smi.app { color: #fff; }
+.simbar .smi.menus { color: rgba(255,255,255,.45); margin-left: 14px; letter-spacing: 1px; }
+.simbar .smr { color: rgba(255,255,255,.6); letter-spacing: .5px; }
+.simbar .smr b { color: rgba(255,255,255,.85); font-weight: 400; }
+.simisland { min-width: 190px; height: 30px; cursor: pointer; }
 .simdesk { position: absolute; inset: 30px 0 0 0; }
 .simterm {
   position: absolute; left: 50%; top: 53%; transform: translate(-50%,-50%) scale(.92);
-  width: 78%; height: 74%; background: rgba(8,8,12,.96);
-  border: 1px solid rgba(255,255,255,.12); border-radius: 10px;
+  width: 78%; height: 74%; background: rgba(10,10,15,.94);
+  border: 1px solid rgba(255,255,255,.14); border-radius: 10px;
   opacity: 0; transition: opacity .5s, transform .5s;
   display: flex; flex-direction: column; overflow: hidden;
   box-shadow: 0 24px 60px rgba(0,0,0,.65);
 }
 .simterm.open { opacity: 1; transform: translate(-50%,-50%) scale(1); }
 .simterm-bar {
-  display: flex; align-items: center; gap: 5px; padding: 6px 9px;
-  background: rgba(255,255,255,.05); border-bottom: 1px solid var(--edge);
-  color: var(--dimmer); font-size: 8px;
+  position: relative; display: flex; align-items: center; gap: 5px; padding: 7px 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  color: rgba(255,255,255,.45); font-size: 8px;
 }
-.simterm-bar i { width: 8px; height: 8px; border-radius: 50%; background: #3a3a44; }
+.simterm-bar i { width: 9px; height: 9px; border-radius: 50%; }
 .simterm-bar i:nth-child(1) { background: #ff5f57; }
 .simterm-bar i:nth-child(2) { background: #febc2e; }
 .simterm-bar i:nth-child(3) { background: #28c840; }
-.simterm-bar span { margin-left: 6px; }
+.simterm-bar span { position: absolute; left: 50%; transform: translateX(-50%); }
 .simterm-body { flex: 1; position: relative; padding: 8px; font-size: 8.5px; line-height: 1.55; }
 .simcmd { color: #fff; }
 .prompt { color: var(--green); }
@@ -256,17 +266,19 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
 .okline { color: var(--green); }
 .simdock {
   position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%);
-  display: flex; gap: 8px; padding: 7px 10px;
-  background: rgba(255,255,255,.06); border: 1px solid var(--edge);
-  border-radius: 14px; backdrop-filter: blur(8px);
+  display: flex; gap: 7px; padding: 7px 9px;
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.16);
+  border-radius: 16px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
 }
 .dockicon {
-  width: 30px; height: 30px; border-radius: 8px;
-  display: flex; align-items: center; justify-content: center; font-size: 12px;
-  background: #1e1e28; border: 1px solid rgba(255,255,255,.1);
-  transition: transform .18s;
+  width: 32px; height: 32px; border-radius: 22%;
+  display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 3px 8px rgba(0,0,0,.35);
+  transition: transform .18s; cursor: pointer;
 }
-.dockicon.bump { transform: translateY(-8px) scale(1.15); }
+.dockicon:hover { transform: translateY(-5px) scale(1.12); }
+.dockicon.bump { transform: translateY(-9px) scale(1.18); }
 .simcursor {
   position: absolute; left: 0; top: 0; z-index: 20; pointer-events: none;
   filter: drop-shadow(1px 2px 2px rgba(0,0,0,.6));
@@ -276,7 +288,7 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
 .simcursor.down svg { transform: scale(.82); }
 .simapproval {
   position: absolute; left: 50%; top: 34px; transform: translate(-50%,-130%);
-  width: 250px; background: #101016;
+  width: 250px; background: rgba(16,16,22,.96); backdrop-filter: blur(10px);
   border: 1px solid rgba(251,146,60,.45); border-radius: 12px;
   padding: 10px 12px; z-index: 15; font-size: 8.5px;
   transition: transform .45s cubic-bezier(.3,1.4,.4,1);
@@ -284,14 +296,32 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
 }
 .simapproval.show { transform: translate(-50%,0); }
 .simapproval.done { border-color: rgba(74,222,128,.5); box-shadow: 0 18px 44px rgba(0,0,0,.6), 0 0 22px rgba(74,222,128,.2); }
+.simapproval.denied { border-color: rgba(248,113,113,.5); box-shadow: 0 18px 44px rgba(0,0,0,.6), 0 0 22px rgba(248,113,113,.2); }
 .sa-title { color: var(--orange); margin-bottom: 5px; }
 .simapproval.done .sa-title { color: var(--green); }
+.simapproval.denied .sa-title { color: var(--red); }
 .sa-diff { color: var(--dim); margin-bottom: 8px; }
 .plus { color: var(--green); font-weight: 400; } .minus { color: var(--red); font-weight: 400; }
 .sa-btns { display: flex; gap: 6px; justify-content: flex-end; }
-.sa-btns span { padding: 3px 12px; border-radius: 6px; font-size: 8px; }
+.sa-btns span { padding: 3px 12px; border-radius: 6px; font-size: 8px; cursor: pointer; transition: transform .1s, filter .1s; }
+.sa-btns span:hover { transform: translateY(-1px); filter: brightness(1.15); }
 .sa-deny { background: rgba(248,113,113,.15); color: var(--red); border: 1px solid rgba(248,113,113,.4); }
 .sa-allow { background: var(--green); color: #06130a; }
+.simsessions {
+  position: absolute; left: 50%; top: 34px; transform: translate(-50%,-130%);
+  width: 290px; background: rgba(16,16,22,.96); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.14); border-radius: 12px;
+  padding: 7px; z-index: 14; font-size: 8.5px;
+  transition: transform .4s cubic-bezier(.3,1.3,.4,1);
+  box-shadow: 0 18px 44px rgba(0,0,0,.6);
+}
+.simsessions.show { transform: translate(-50%,0); }
+.ss-head { color: var(--dimmer); font-size: 7.5px; letter-spacing: 1px; padding: 3px 6px 6px; }
+.ss-row { display: flex; align-items: center; gap: 7px; padding: 5px 6px; border-radius: 7px; cursor: pointer; }
+.ss-row:hover { background: rgba(255,255,255,.06); }
+.ss-name { width: 46px; letter-spacing: .5px; }
+.ss-status { color: var(--dim); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ss-subs { color: var(--dimmer); font-size: 7.5px; }
 
 /* ---- reveal ---- */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
@@ -340,13 +370,13 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
     </div>
     <div class="sim reveal" id="sim">
       <div class="simbar">
-        <span>Finder</span>
+        <span><span class="smi">􀣺</span> <span class="smi app">Finder</span><span class="smi menus">File Edit View Go Window Help</span></span>
         <div class="island simisland" id="simisland"></div>
-        <span id="menuright"></span>
+        <span class="smr">♪ &nbsp;⚡ <b>100%</b> &nbsp;☰ &nbsp;<b id="menuright"></b></span>
       </div>
       <div class="simdesk">
         <div class="simterm" id="simterm">
-          <div class="simterm-bar"><i></i><i></i><i></i><span>Terminal — cmux</span></div>
+          <div class="simterm-bar"><i></i><i></i><i></i><span>cmux — Terminal — 120×36</span></div>
           <div class="simterm-body">
             <div class="simcmd" id="simcmdline"><span class="prompt">~ % </span><span id="simtyped"></span><span class="caret"></span></div>
             <div class="simpanes" id="simpanes">
@@ -358,20 +388,23 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
           </div>
         </div>
         <div class="simdock">
-          <div class="dockicon" title="Finder" style="color:#60a5fa">◐</div>
-          <div class="dockicon" id="dockterm" title="Terminal" style="color:#fff">&gt;_</div>
-          <div class="dockicon" title="Safari" style="color:#22d3ee">◍</div>
-          <div class="dockicon" title="Music" style="color:#f87171">♪</div>
+          <div class="dockicon" title="Finder" style="background:linear-gradient(180deg,#5ab0ff,#1c6fe8)">◐</div>
+          <div class="dockicon" id="dockterm" title="Terminal" style="background:linear-gradient(180deg,#3a3a44,#101016)">&gt;_</div>
+          <div class="dockicon" title="Safari" style="background:linear-gradient(180deg,#4fc9ff,#1e7be8)">◍</div>
+          <div class="dockicon" title="Notes" style="background:linear-gradient(180deg,#f7e28b,#e0bd35);color:#5a4a10">✎</div>
+          <div class="dockicon" title="Music" style="background:linear-gradient(180deg,#ff5f6d,#d31f3c)">♪</div>
+          <div class="dockicon" title="Settings" style="background:linear-gradient(180deg,#9a9aa2,#5d5d66)">⚙</div>
         </div>
       </div>
+      <div class="simsessions" id="simsessions"></div>
       <div class="simapproval" id="simapproval">
         <div class="sa-title">⚠ approval · claude</div>
         <div class="sa-diff">Edit · Sources/PcNotc/NotchModel.swift <b class="plus">+14</b> <b class="minus">−2</b></div>
-        <div class="sa-btns"><span class="sa-deny">Deny</span><span class="sa-allow" id="simallow">Allow</span></div>
+        <div class="sa-btns"><span class="sa-deny" id="simdeny">Deny</span><span class="sa-allow" id="simallow">Allow</span></div>
       </div>
       <div class="simcursor" id="simcursor"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M5 3l14 7.2-6.6 1.4L8.8 18z" fill="#fff" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
     </div>
-    <div class="stage-note">scripted demo — loops on its own · no real sessions were harmed</div>
+    <div class="stage-note">scripted demo — but the notch is real: <b style="color:var(--orange)">when it glows, click Allow or Deny yourself</b> · click the island anytime to see the sessions</div>
   </section>
 
   <!-- TICKER -->
@@ -505,7 +538,7 @@ function tick(now) {
     if (c.posture === 'march') {
       if (now - c.last > c.tempo) { c.frame = !c.frame; c.last = now; }
       if (now > c.blinkAt && now > c.blinkTil) { c.blinkTil = now + 120; c.blinkAt = now + 4000 + Math.random()*3000; }
-      draw(c, (now < c.blinkTil && c.frame === false) ? g.blink : (c.frame ? g.b : g.a));
+      draw(c, (now < c.blinkTil && c.frame === false) ? (g.blink || g.a) : ((c.frame ? g.b : g.a) || g.a));
     } else {
       draw(c, g[c.posture] || g.a);
     }
@@ -531,24 +564,35 @@ const simtyped = document.getElementById('simtyped');
 const simpanes = document.getElementById('simpanes');
 const simcursor = document.getElementById('simcursor');
 const simapproval = document.getElementById('simapproval');
+const simsessions = document.getElementById('simsessions');
+const simallow = document.getElementById('simallow');
+const simdeny = document.getElementById('simdeny');
 const dockterm = document.getElementById('dockterm');
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
 document.querySelectorAll('.pane-head .pic').forEach(el =>
   spawnCreature(el, el.dataset.sp, el.dataset.color, 'march', 1.1, 520));
 
+function staticCreature(parent, sp, color, px) {
+  const cv = document.createElement('canvas');
+  cv.width = Math.ceil(11*px); cv.height = Math.ceil(8*px);
+  cv.style.width = 11*px+'px'; cv.style.height = 8*px+'px';
+  parent.appendChild(cv);
+  draw({cv, color, px}, CREATURES[sp].a);
+}
+
 const AGENTS = [
-  {id:'claude', cmd:'claude', css:'#fb923c', subs:47, lines:[
+  {id:'claude', cmd:'claude', css:'#fb923c', sp:'zig', subs:47, lines:[
     '⏵ Read(Sources/PcNotc/Views.swift)','⏵ subagent ⑂ explore: panel layout',
     '⏵ Edit(NotchModel.swift) +12 −3','⏵ Bash(swift build)','  Build complete! (9.58s)',
     '⏵ subagent ⑂ plan: quota strip','⏵ Write(Views+Cards.swift) +84','⏵ Bash(swift test)','  19/19 passing']},
-  {id:'jcode', cmd:'jcode', css:'#4ade80', subs:33, lines:[
+  {id:'jcode', cmd:'jcode', css:'#4ade80', sp:'inky', subs:33, lines:[
     '⏵ fold journal: 1,204 events','⏵ incremental fold — appended bytes',
     '⏵ subagent ⑂ perf: refresh gating','⏵ Write(ROADMAP.md)','⏵ Bash(swift build)','  Build complete! (6.02s)']},
-  {id:'kimi', cmd:'kimi', css:'#22d3ee', subs:29, lines:[
+  {id:'kimi', cmd:'kimi', css:'#22d3ee', sp:'sparq', subs:29, lines:[
     '⏵ Grep("island", Sources/)','⏵ Edit(Views.swift) +7 −2',
     '⏵ subagent ⑂ sweep: approval diffs','⏵ Read(NotchController.swift)','⏵ Bash(swift build)','  Build complete! (8.11s)']},
-  {id:'hermes', cmd:'hermes', css:'#c084fc', subs:19, lines:[
+  {id:'hermes', cmd:'hermes', css:'#c084fc', sp:'pip', subs:19, lines:[
     '⏵ task: wire hook events','⏵ Edit(pcnotc-hook) +5 −1',
     '⏵ subagent ⑂ check: deny-wins','⏵ Bash(./packaging/smoke.sh)','  smoke OK (19/19)','⏵ status: waiting on review']},
 ];
@@ -590,14 +634,53 @@ const islandWorking = () => islandSet(() => {
   verb('4 working');
 });
 
+// ---- interactive session panel (click the island) ----
+let simPhase = 'idle';
+let ssTimer = null;
+function statusFor(a) {
+  switch (simPhase) {
+    case 'launching': return 'starting…';
+    case 'working':   return a.id === 'claude' ? 'Thinking' : 'Running tool';
+    case 'approval':  return a.id === 'claude' ? 'Needs approval' : 'Thinking';
+    case 'done':      return 'Done';
+    default:          return 'idle';
+  }
+}
+function renderSessions() {
+  simsessions.innerHTML = '<div class="ss-head">PcNotch — live sessions</div>';
+  AGENTS.forEach(a => {
+    const row = document.createElement('div'); row.className = 'ss-row';
+    const pic = document.createElement('span'); row.appendChild(pic);
+    staticCreature(pic, a.sp, a.css, 1.1);
+    const name = document.createElement('span'); name.className = 'ss-name';
+    name.style.color = a.css; name.textContent = a.id;
+    const st = document.createElement('span'); st.className = 'ss-status';
+    st.textContent = statusFor(a);
+    const sub = document.createElement('span'); sub.className = 'ss-subs';
+    sub.textContent = document.getElementById('sub-'+a.id).textContent;
+    row.append(name, st, sub);
+    simsessions.appendChild(row);
+  });
+}
+function closeSessions() { simsessions.classList.remove('show'); clearInterval(ssTimer); }
+simisland.addEventListener('click', () => {
+  if (simsessions.classList.contains('show')) { closeSessions(); return; }
+  renderSessions();
+  simsessions.classList.add('show');
+  ssTimer = setInterval(renderSessions, 600);
+});
+
 function simReset() {
   simterm.classList.remove('open');
   simcmdline.style.display = ''; simtyped.textContent = '';
   simpanes.classList.remove('split');
   document.querySelectorAll('.pane-log').forEach(l => l.innerHTML = '');
   document.querySelectorAll('.pane .sub').forEach(s => s.textContent = '');
-  simapproval.classList.remove('show','done');
+  simapproval.classList.remove('show','done','denied');
   simapproval.querySelector('.sa-title').textContent = '⚠ approval · claude';
+  simallow.onclick = simdeny.onclick = null;
+  closeSessions();
+  simPhase = 'idle';
   islandIdle();
   simcursor.style.transitionDuration = '0ms';
   simcursor.style.transform = `translate(${sim.clientWidth*0.82}px, ${sim.clientHeight*0.72}px)`;
@@ -614,6 +697,7 @@ async function runSim() {
     await typeText(simtyped, 'cmux');
     await wait(480);
     simcmdline.style.display = 'none'; simpanes.classList.add('split');
+    simPhase = 'launching';
     await wait(550);
     for (const a of AGENTS) {
       const log = document.getElementById('log-'+a.id);
@@ -632,7 +716,7 @@ async function runSim() {
     const kt = document.createElement('span'); kl.append(kp, kt); clog.appendChild(kl);
     await typeText(kt, 'start the project — island polish');
     await wait(500);
-    islandWorking();
+    islandWorking(); simPhase = 'working';
     let working = true; const idx = {};
     const workers = AGENTS.map(a => (async () => {
       idx[a.id] = 0; let shown = 0;
@@ -650,6 +734,7 @@ async function runSim() {
       }
     })());
     await wait(5200);
+    simPhase = 'approval';
     islandSet(() => {
       simisland.classList.add('attn');
       spawnCreature(simisland,'zig','orange','alert',1.6);
@@ -657,20 +742,45 @@ async function runSim() {
       verb('Needs approval','wait');
     });
     simapproval.classList.add('show');
-    await wait(1400);
-    await clickAt(document.getElementById('simallow'), 950);
-    simapproval.classList.add('done');
-    simapproval.querySelector('.sa-title').textContent = '✓ approved — back to work';
-    await wait(750);
-    simapproval.classList.remove('show');
-    islandWorking();
-    await wait(4300);
+    // the visitor answers it themselves — or the scripted cursor does after a beat
+    let choice = await new Promise(res => {
+      const to = setTimeout(() => res(null), 4600);
+      simallow.onclick = () => { clearTimeout(to); res('allow'); };
+      simdeny.onclick  = () => { clearTimeout(to); res('deny'); };
+    });
+    simallow.onclick = simdeny.onclick = null;
+    const byUser = choice !== null;
+    if (choice === null) { await clickAt(simallow, 950); choice = 'allow'; }
+    if (choice === 'deny') {
+      simapproval.classList.add('denied');
+      simapproval.querySelector('.sa-title').textContent =
+        byUser ? '✗ you denied it — claude waits in the terminal' : '✗ denied — claude waits in the terminal';
+      const d = document.createElement('div'); d.style.color = '#f87171';
+      d.textContent = '✗ Edit denied — permission refused';
+      clog.appendChild(d);
+      islandSet(() => {
+        spawnCreature(simisland,'zig','dim','a',1.6); spawnCreature(simisland,'inky','dim','a',1.6);
+        spawnCreature(simisland,'sparq','dim','a',1.6); verb('denied · 1 waiting');
+      });
+      await wait(2200);
+      simapproval.classList.remove('show');
+      await wait(2400);
+    } else {
+      simapproval.classList.add('done');
+      simapproval.querySelector('.sa-title').textContent =
+        byUser ? '✓ approved by you — that\'s PcNotch' : '✓ approved — back to work';
+      await wait(950);
+      simapproval.classList.remove('show');
+      islandWorking(); simPhase = 'working';
+      await wait(4300);
+    }
     working = false; await Promise.all(workers);
     AGENTS.forEach(a => {
       const log = document.getElementById('log-'+a.id);
       const d = document.createElement('div'); d.className = 'okline';
       d.textContent = '✔ done — idle'; log.appendChild(d);
     });
+    simPhase = 'done';
     islandSet(() => {
       spawnCreature(simisland,'zig','dim','a',1.6); spawnCreature(simisland,'inky','dim','a',1.6);
       spawnCreature(simisland,'sparq','dim','a',1.6); spawnCreature(simisland,'pip','dim','a',1.6);
