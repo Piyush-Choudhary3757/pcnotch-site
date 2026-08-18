@@ -34,6 +34,8 @@ body {
 }
 ::selection { background: var(--green); color: #000; }
 a { color: inherit; text-decoration: none; }
+.creature { animation: pop .25s ease-out; }
+@keyframes pop { from { transform: scale(.2); opacity: 0; } }
 .creature canvas { display: block; image-rendering: pixelated; }
 
 /* ---- ambient glow ---- */
@@ -375,6 +377,8 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
 .ss-age { color: rgba(255,255,255,.4); font-size: 9px; }
 .ss-jump { margin-left: auto; color: #64D2FF; background: rgba(100,210,255,.15); font-size: 9.5px; padding: 3px 6px; border-radius: 5px; white-space: nowrap; }
 .ss-status { margin: 6px 0 0 26px; font-size: 10.5px; }
+.ss-subrow { margin: 5px 0 0 26px; display: flex; align-items: center; gap: 3px; }
+.ss-subrow .ss-pink { margin-left: 5px; }
 .ss-console { margin: 5px 0 0 26px; background: rgba(0,0,0,.45); border-radius: 6px; padding: 6px 9px; font-size: 9.5px; line-height: 1.55; }
 .ss-console .t { color: rgba(255,255,255,.55); }
 .ss-console .o { color: #32D74B; }
@@ -586,7 +590,7 @@ const CREATURES = {
   flap:  {a:flapA}, glop: {a:glopA},
 };
 const COLORS = {green:'#4ade80', orange:'#fb923c', cyan:'#22d3ee', purple:'#c084fc',
-                red:'#f87171', blue:'#60a5fa', dim:'rgba(255,255,255,.30)'};
+                red:'#f87171', blue:'#60a5fa', aiBlue:'#5999FF', dim:'rgba(255,255,255,.30)'};
 
 const live = [];
 function spawnCreature(parent, sp, color, posture, px, tempo) {
@@ -764,9 +768,12 @@ function renderSessions() {
     `<span class="ss-pink">⅄ 47</span><span class="ss-wcost">$0.31</span>` +
     `<span class="chip orange">Claude</span><span class="ss-age">2m</span><span class="ss-jump">^G ↗</span></div>` +
     `<div class="ss-status" style="color:${scol}">${stxt}</div>` +
+    `<div class="ss-subrow"><span class="fcsubs"></span><span class="ss-pink">47 subagents in the swarm</span></div>` +
     `<div class="ss-console">${CONSOLE[simPhase] || CONSOLE.idle}</div>`;
   simsessions.appendChild(f);
   staticCreature(f.querySelector('.fc'), 'zig', simPhase === 'approval' ? 'orange' : 'green', 1.9);
+  const fcsubs = f.querySelector('.fcsubs');
+  ['pip','zig','sparq','inky','pip','sparq'].forEach(sp => staticCreature(fcsubs, sp, 'aiBlue', 0.9));
   [['jcode','journal perf','5m'], ['kimi','island sweep','7m'], ['hermes','hook wiring','9m']].forEach(([id, title, age]) => {
     const a = AGENTS.find(x => x.id === id);
     const r = document.createElement('div'); r.className = 'ss-row';
@@ -780,6 +787,7 @@ function renderSessions() {
 }
 function closeSessions() { simsessions.classList.remove('show'); clearInterval(ssTimer); }
 simisland.addEventListener('click', () => {
+  if (simapproval.classList.contains('show')) return;
   if (simsessions.classList.contains('show')) { closeSessions(); return; }
   renderSessions();
   simsessions.classList.add('show');
@@ -848,9 +856,27 @@ async function runSim() {
         sub.textContent = shown + ' subagents';
       }
     })());
+    const swarm = (async () => {
+      const kinds = ['pip','sparq','inky','zig'];
+      let n = 0;
+      while (working) {
+        await wait(600 + Math.random()*550);
+        if (!working) break;
+        if (simPhase !== 'working') continue;
+        const swarmers = live.filter(c => c.swarm && slotL.contains(c.cv));
+        if (swarmers.length >= 4) {
+          const old = swarmers[0];
+          old.cv.parentElement.remove();
+          live.splice(live.indexOf(old), 1);
+        }
+        spawnCreature(slotL, kinds[n++ % kinds.length], 'aiBlue', 'march', 1.3, 300 + Math.random()*300);
+        live[live.length-1].swarm = true;
+      }
+    })();
     await wait(5200);
     simPhase = 'approval';
     islandWaiting();
+    closeSessions();
     simapproval.classList.add('show');
     // the visitor answers it themselves — or the scripted cursor does after a beat
     let choice = await new Promise(res => {
@@ -878,7 +904,7 @@ async function runSim() {
       islandWorking(); simPhase = 'working';
       await wait(4300);
     }
-    working = false; await Promise.all(workers);
+    working = false; await Promise.all([...workers, swarm]);
     AGENTS.forEach(a => {
       const log = document.getElementById('log-'+a.id);
       const d = document.createElement('div'); d.className = 'okline';
