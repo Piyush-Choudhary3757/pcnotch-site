@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; font-src data:; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; font-src data:; img-src 'self' data:; base-uri 'none'; form-action 'none'; connect-src https://api.github.com">
 <title>PcNotch: your AI agents, living in the Mac notch</title>
 <meta name="description" content="PcNotch turns the Mac notch into mission control for Claude Code, OpenCode, Cline, Hermes, jcode and Kimi Code. Watch every session, answer approvals, jump back to the exact terminal tab.">
 <style>
@@ -450,7 +450,7 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
       <a class="btn btn-primary" href="https://github.com/Piyush-Choudhary3757/pcnotch-site/releases/download/v1.5.0-beta.2/PcNotch-1.5.0-beta.2.dmg">↓ Download for macOS</a>
       <a class="btn btn-ghost" href="https://github.com/Piyush-Choudhary3757/pcnotch-site">View on GitHub</a>
     </div>
-    <div class="dl-meta">v1.5.0-beta.2 · universal (Apple Silicon + Intel) · DMG 3.0 MB · <code>free</code></div>
+    <div class="dl-meta">v1.5.0-beta.2 · universal (Apple Silicon + Intel) · DMG 3.0 MB · <code>free</code><span class="dlcount"></span></div>
   </header>
 
   <!-- WHY -->
@@ -599,7 +599,7 @@ footer .flinks { margin-top: 12px; display: flex; gap: 22px; justify-content: ce
     <div class="dl-box reveal">
       <span class="eyebrow"><b>beta</b> · v1.5.0-beta.2</span>
       <h2>Put your agents in the notch</h2>
-      <p>Free. Universal build for Apple Silicon and Intel Macs.</p>
+      <p>Free. Universal build for Apple Silicon and Intel Macs.<span class="dlcount"></span></p>
       <a class="btn btn-primary" href="https://github.com/Piyush-Choudhary3757/pcnotch-site/releases/download/v1.5.0-beta.2/PcNotch-1.5.0-beta.2.dmg">↓ Download PcNotch-1.5.0-beta.2.dmg</a>
       <ul class="dl-notes">
         <li>Open the DMG and drag <code>PcNotch.app</code> to Applications.</li>
@@ -1044,6 +1044,24 @@ function reveal() {
 addEventListener('scroll', reveal, {passive: true});
 addEventListener('resize', reveal);
 reveal(); requestAnimationFrame(reveal);
+
+// ---- live download counter (GitHub Releases API, cached 1h) ----
+(async () => {
+  try {
+    const KEY = 'pcnotch-dl';
+    const c = JSON.parse(localStorage.getItem(KEY) || 'null');
+    let n;
+    if (c && Date.now() - c.t < 36e5) { n = c.n; }
+    else {
+      const r = await fetch('https://api.github.com/repos/Piyush-Choudhary3757/pcnotch-site/releases');
+      if (!r.ok) return;
+      const rels = await r.json();
+      n = rels.flatMap(x => x.assets || []).reduce((a, x) => a + (x.download_count || 0), 0);
+      localStorage.setItem(KEY, JSON.stringify({ n, t: Date.now() }));
+    }
+    if (n > 0) document.querySelectorAll('.dlcount').forEach(el => { el.textContent = ' · ' + n.toLocaleString() + ' downloads'; });
+  } catch (e) {}
+})();
 
 // ---- live menu-bar clock ----
 function clock() {
