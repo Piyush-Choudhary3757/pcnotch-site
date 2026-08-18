@@ -118,7 +118,9 @@ h1 .accent { color: var(--green); text-shadow: 0 0 26px rgba(74,222,128,.45); }
   border-radius: 0 0 12px 12px;
   display: flex; align-items: center;
   padding: 0 10px;
+  transition: opacity .3s, transform .3s;
 }
+.island.gone { opacity: 0; transform: translateX(-50%) translateY(-8px) scale(.94); pointer-events: none; }
 @keyframes blink { 50% { opacity: .35 } }
 .island .slot { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
 .island #slotL { justify-content: flex-end; }
@@ -801,6 +803,7 @@ function simReset() {
   document.querySelectorAll('.pane-log').forEach(l => l.innerHTML = '');
   document.querySelectorAll('.pane .sub').forEach(s => s.textContent = '');
   simapproval.classList.remove('show');
+  simisland.classList.remove('gone');
   simallow.onclick = simdeny.onclick = simauto.onclick = null;
   closeSessions();
   simPhase = 'idle';
@@ -878,6 +881,7 @@ async function runSim() {
     islandWaiting();
     closeSessions();
     simapproval.classList.add('show');
+    simisland.classList.add('gone');
     // the visitor answers it themselves — or the scripted cursor does after a beat
     let choice = await new Promise(res => {
       const to = setTimeout(() => res(null), 4600);
@@ -889,6 +893,7 @@ async function runSim() {
     const byUser = choice !== null;
     if (choice === null) { await clickAt(simallow, 950); choice = 'allow'; }
     simapproval.classList.remove('show');
+    simisland.classList.remove('gone');
     if (choice === 'deny') {
       islandFlash(false, byUser ? '✗ you denied it' : '✗ denied');
       const d = document.createElement('div'); d.style.color = '#f87171';
